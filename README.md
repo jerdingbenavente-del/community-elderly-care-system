@@ -1,135 +1,93 @@
-# 社区养老服务中心照护管理系统
+# 社区养老服务中心照护管理系统 —— 后端
 
-## 一、项目简介
+## 技术栈
 
-社区养老服务中心照护管理系统是一套面向社区养老服务中心的信息化管理系统。
-
-系统主要服务于：
-
-- 养老中心管理员
-- 照护工作人员
-- 老人家属
-
-通过数字化方式管理老人档案、健康记录、照护服务、排班、活动、餐饮等信息，提高养老服务中心的管理效率。
-
----
-
-## 二、技术架构
-
-### 后端
-
-- Spring Boot 3
+- Java 17
+- Spring Boot 3.3.x
+- Maven
 - MyBatis-Plus
-- MySQL 8
+- Spring Security + JWT
+- MySQL 8.x
 - Redis
-- JWT
 
-### Web 管理端
+## 当前进度
 
-- Vue 3
-- Element Plus
-- ECharts
+已完成第二阶段：
 
-### 家属端
+- 第一阶段数据库表（见 `../sql`）
+- RBAC 种子数据
+- JWT 登录鉴权
+- 操作日志（登录成功/失败）
+- 系统用户只读列表（用于权限联调）
 
-- 微信小程序
+尚未实现：老人 CRUD、健康、照护、排班、餐饮、活动、用药、统计、前端、小程序。
 
----
+## 本地准备
 
-## 三、主要功能
+### 1. 导入 SQL
 
-### 1. 老人档案管理
+```bash
+mysql -uroot --default-character-set=utf8mb4 < ../sql/schema/01_phase1_tables.sql
+mysql -uroot --default-character-set=utf8mb4 < ../sql/data/01_seed_rbac.sql
+```
 
-- 老人基础信息
-- 病史
-- 过敏史
-- 紧急联系人
+PowerShell 可用：
 
-### 2. 健康记录管理
+```powershell
+Get-Content ..\sql\schema\01_phase1_tables.sql -Raw -Encoding UTF8 | mysql -uroot --default-character-set=utf8mb4
+Get-Content ..\sql\data\01_seed_rbac.sql -Raw -Encoding UTF8 | mysql -uroot --default-character-set=utf8mb4
+```
 
-- 血压
-- 血糖
-- 体温
-- 心率
-- 健康趋势
+### 2. 配置
 
-### 3. 健康异常预警
+修改 `application-dev.yml`，或使用环境变量：
 
-- 自动识别健康指标异常
-- 生成预警信息
-- 通知照护人员
-- 通知老人家属
+| 变量 | 说明 |
+|---|---|
+| `MYSQL_URL` | JDBC URL |
+| `MYSQL_USERNAME` | 数据库用户 |
+| `MYSQL_PASSWORD` | 数据库密码 |
+| `REDIS_HOST` / `REDIS_PORT` | Redis |
+| `ELDERCARE_JWT_SECRET` | JWT 密钥（生产必改） |
 
-### 4. 照护服务管理
+### 3. 启动
 
-- 服务项目管理
-- 服务预约
-- 服务订单
-- 护理员分配
-- 服务签到
-- 服务评价
+```bash
+mvn -DskipTests package
+mvn spring-boot:run
+```
 
-### 5. 人员排班
+## 开发环境测试账号（仅本地）
 
-- 护理员排班
-- 班次管理
-- 调班申请
+| 用户名 | 密码 | 角色 | 用途 |
+|---|---|---|---|
+| `admin` | `Admin@123` | ADMIN | 管理员联调 |
+| `care01` | `Care@123` | CARE_STAFF | 照护人员权限边界测试 |
+| `family01` | `Family@123` | FAMILY | 家属角色测试 |
 
-### 6. 活动管理
+数据库中仅保存 BCrypt 哈希，无明文密码。
 
-- 活动发布
-- 老人报名
-- 活动签到
+Dashboard 统计权限种子（幂等，可重复执行）：
 
-### 7. 权限管理
+```bash
+mysql -uroot elderly_care < ../sql/data/10_fa10_dashboard_statistics_seed.sql
+```
 
-- 管理员
-- 照护人员
-- 老人家属
+将为 ADMIN 写入 `dashboard:statistics:view`（接口仍以 ADMIN 角色兜底校验）。
 
----
-
-## 四、团队成员
-
-| 姓名 | 角色 | 职责 |
-|---|---|---|
-| 彭立涛 | 项目经理 PM | 项目管理、进度控制 |
-| 黄锐峰 | 后端架构师 BE | 后端架构、数据库、接口 |
-| 刘玉成 | 前端工程师 FE | Web 前端开发 |
-| 章海丰 | 测试工程师 QA | 测试、Bug 管理 |
-
----
-
-## 五、项目进度
-
-### P1 基础工程
-
-- [x] Spring Boot 项目搭建
-- [x] 基础架构搭建
-
-### P2 老人档案模块
-
-- [x] 老人档案管理
-
-### P3 照护服务闭环
-
-- [x] 服务项目
-- [x] 服务预约
-- [x] 服务确认
-- [x] 服务执行
-- [x] 服务完成
-
-### P4 护理员排班
-
-- [ ] 护理员管理
-- [ ] 排班管理
-- [ ] 服务订单分配
-
----
-
-## 六、项目文档
-
-项目相关文档存放在：
+## 主要接口
 
 ```text
-/docs
+POST /api/auth/login
+GET  /api/auth/me
+GET  /api/system/users   # 需要 system:user:list
+GET  /api/health
+```
+
+登录示例：
+
+```bash
+curl -X POST http://127.0.0.1:8080/api/auth/login ^
+  -H "Content-Type: application/json" ^
+  -d "{\"username\":\"admin\",\"password\":\"Admin@123\"}"
+```

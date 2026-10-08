@@ -1,0 +1,42 @@
+# ===== Java / Maven =====
+backend/target/
+*.class
+*.jar
+*.war
+*.log
+
+# ===== Node / Vite =====
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+frontend/target/
+
+# ===== IDE =====
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.iml
+.classpath
+.project
+.settings/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ===== Temporary / local =====
+*.tmp
+*.temp
+*.token
+.tmp-*
+frontend/.tmp-*
+backend/uploads/
+backend/logs-*.txt
+frontend/tmp-*/
+frontend/scripts/p0-auth-session-check.mjs.bak
+
+# ===== Env overrides (keep .env.development template if committed intentionally) =====
+.env.local
+.env.*.local

@@ -1,0 +1,37 @@
+:root {
+  /* 智慧养老 · 自然健康主色 */
+  --ec-color-primary: #3f8fc4;
+  --ec-color-primary-light: #5aa4d4;
+  --ec-color-primary-dark: #2f7fa8;
+  --ec-color-secondary: #56b49a;
+  --ec-color-warn: #f0a35a;
+  --ec-color-danger: #e86b6b;
+  --ec-color-purple: #8f7bc8;
+  --ec-color-teal: #4eb3b0;
+  --ec-color-yellow: #e2c05c;
+
+  /* 页面背景：浅蓝灰 + 淡绿 */
+  --ec-bg-page: #f4fafc;
+  --ec-bg-page-grad: linear-gradient(145deg, #f4fafc 0%, #f6fbf8 48%, #eef6fb 100%);
+  --ec-bg-card: #ffffff;
+  --ec-bg-soft: #f0f7fb;
+  --ec-border: rgba(63, 143, 196, 0.1);
+  --ec-text: #23415f;
+  --ec-text-secondary: #6b8499;
+  --ec-text-muted: #8aa0b5;
+
+  /* 侧栏渐变 */
+  --ec-aside-grad: linear-gradient(180deg, #2f7fa8 0%, #3c92b2 48%, #56b49a 100%);
+
+  --ec-header-height: 60px;
+  --ec-sidebar-width: 236px;
+  --ec-right-panel: 320px;
+  --ec-radius: 18px;
+  --ec-radius-sm: 14px;
+  --ec-shadow: 0 6px 20px rgba(63, 120, 150, 0.07);
+  --ec-shadow-hover: 0 10px 26px rgba(63, 143, 196, 0.12);
+
+  --el-color-primary: var(--ec-color-primary);
+  --el-border-radius-base: 10px;
+  --el-border-radius-small: 8px;
+}

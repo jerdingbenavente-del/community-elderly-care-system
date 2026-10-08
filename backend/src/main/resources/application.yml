@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: elderly-care
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+eldercare:
+  jwt:
+    # 生产环境务必通过环境变量覆盖，勿使用默认值
+    secret: ${ELDERCARE_JWT_SECRET:ElderCare-Dev-Only-JWT-Secret-Key-256bit-Do-Not-Use-In-Prod-2026!}
+    expire-seconds: ${ELDERCARE_JWT_EXPIRE_SECONDS:86400}
+  upload:
+    base-dir: ${ELDERCARE_UPLOAD_DIR:uploads}
+    avatar-subdir: avatar
+    max-avatar-bytes: ${ELDERCARE_MAX_AVATAR_BYTES:2097152}
+
+logging:
+  level:
+    root: INFO
+    com.eldercare: INFO

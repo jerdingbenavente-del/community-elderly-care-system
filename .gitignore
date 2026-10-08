@@ -3,6 +3,8 @@ backend/target/
 *.class
 *.jar
 *.war
+*.nar
+*.ear
 *.log
 
 # ===== Node / Vite =====
@@ -36,6 +38,9 @@ backend/uploads/
 backend/logs-*.txt
 frontend/tmp-*/
 frontend/scripts/p0-auth-session-check.mjs.bak
+.mtj.tmp/
+hs_err_pid*
+replay_pid*
 
 # ===== Env overrides (keep .env.development template if committed intentionally) =====
 .env.local
